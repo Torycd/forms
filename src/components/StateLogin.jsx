@@ -1,43 +1,31 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Input from "./Input.jsx";
+import { isEmail, isNotEmpty, hasMinLength } from "../util/validation.js";
+import { useInput } from "../hooks/useInput.js";
 
 export default function Login() {
-  // const [enteredEmail, setEnteredEmail] = useState("");
-  // const [enteredPassword, setEnteredPassword] = useState("");
-  const [enteredValue, setEnteredValue] = useState({
-    email: "",
-    password: "",
-  });
-  const [didEdit, setDidEdit] = useState({
-    email: false,
-    password: false,
-  });
- 
-  const emailIsInvalid = didEdit.email && !enteredValue.email.includes("@");
-  const passwordIsInvalid =
-    didEdit.password && !enteredValue.password.trim().length < 6;
+  const {
+    value: emailValue,
+    handleInputChange: handleEmailChnage,
+    handleInputBlur: handleEmailBlur,
+    hasError: emailHasError
+  } = useInput("", (value) => isEmail(value) && isNotEmpty(value));
 
-  function handleInputBlur(identifier, value) {
-    setDidEdit((prevEdit) => ({
-      ...prevEdit,
-      [identifier]: true,
-    }));
-  }
+  const {
+    value: passwordValue,
+    handleInputChange: handlePasswordChnage,
+    handleInputBlur: handlePasswordBlur,
+    hasError: passwordHasError
+  } = useInput("", () => hasMinLength(value, 6));
 
-  function handleInputChange(identifier, value) {
-    setEnteredValue((prevValues) => ({
-      ...prevValues,
-      [identifier]: value,
-    }));
-    setDidEdit((prevEdit) => ({
-      ...prevEdit,
-      [identifier]: false,
-    }));
-  }
+
+
   function handleSubmit(event) {
     event.preventDefault();
+    if(emailHasError || passwordHasError){
+      return;
+    }
     console.log("submitted");
-    
   }
 
   return (
@@ -50,10 +38,10 @@ export default function Login() {
           id="email"
           type="email"
           name="email"
-          value={enteredValue.email}
-          onBlur={() => handleInputBlur("email")}
-          onChange={(event) => handleInputChange("email", event.target.value)}
-          error={emailIsInvalid && 'please enter a valid email'}
+          value={emailValue}
+          onBlur={handleEmailBlur}
+          onChange={handleEmailChnage}
+          error={emailHasError && "please enter a valid email"}
         />
 
         <Input
@@ -62,11 +50,9 @@ export default function Login() {
           type="password"
           name="password"
           value={enteredValue.password}
-          onBlur={() => handleInputBlur("password")}
-          onChange={(event) =>
-            handleInputChange("password", event.target.value)
-          }
-          error={passwordIsInvalid && 'please enter a valid passowrd'}
+          onBlur={handlePasswordBlur}
+          onChange={handlePasswordChnage}
+          error={passwordHasError && "please enter a valid passowrd"}
         />
       </div>
 
