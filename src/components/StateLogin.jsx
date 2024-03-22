@@ -14,9 +14,6 @@ export default function Login() {
 
   const emailIsInvalid = didEdit.email && !enteredValue.email.includes("@");
 
-  function handleSubmit(event) {
-    event.preventDefault();
-  }
   function handleInputBlur(identifier, value) {
     setDidEdit((prevEdit) => ({
       ...prevEdit,
@@ -29,10 +26,13 @@ export default function Login() {
       ...prevValues,
       [identifier]: value,
     }));
-    setDidEdit(prevEdit => ({
+    setDidEdit((prevEdit) => ({
       ...prevEdit,
-      [identifier] : false
-    }))
+      [identifier]: false,
+    }));
+  }
+  function handleSubmit(event) {
+    event.preventDefault();
   }
 
   return (
