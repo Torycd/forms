@@ -18,7 +18,7 @@ export default function Login() {
       setEmailIsInvalid(true)
       return;
     }
-
+    setEmailIsInvalid(false)
   }
   return (
     <form onSubmit={handleSubmit}>
