@@ -16,7 +16,7 @@ export default function Login() {
     handleInputChange: handlePasswordChnage,
     handleInputBlur: handlePasswordBlur,
     hasError: passwordHasError
-  } = useInput("", () => hasMinLength(value, 6));
+  } = useInput("", (value) => hasMinLength(value, 6));
 
 
 
@@ -49,7 +49,7 @@ export default function Login() {
           id="password"
           type="password"
           name="password"
-          value={enteredValue.password}
+          value={passwordValue}
           onBlur={handlePasswordBlur}
           onChange={handlePasswordChnage}
           error={passwordHasError && "please enter a valid passowrd"}
@@ -58,7 +58,7 @@ export default function Login() {
 
       <p className="form-actions">
         <button className="button button-flat">Reset</button>
-        <button className="button" disabled={emailIsInvalid}>
+        <button className="button">
           Login
         </button>
       </p>
